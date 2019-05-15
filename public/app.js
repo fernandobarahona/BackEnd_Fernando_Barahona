@@ -1,5 +1,5 @@
 //Inicializador del elemento Slider
-$("#rangoPrecio").ionRangeSlider({
+/* $("#rangoPrecio").ionRangeSlider({
   type: "double",
   grid: false,
   min: 0,
@@ -21,4 +21,8 @@ function setSearch() {
   })
 }
 
-setSearch()
+setSearch() */
+
+const request = new XMLHttpRequest;
+request.open('GET', "http://127.0.0.1:1337/",true);
+request.send();
