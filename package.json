@@ -1,0 +1,11 @@
+{
+  "name": "backend_fernando_barahona",
+  "version": "1.0.0",
+  "description": "proyecto final NEXTU BACKEND buscador en backend",
+  "main": "./server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "fernando barahona",
+  "license": "ISC"
+}
