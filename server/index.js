@@ -4,7 +4,7 @@ const PORT = 1337;
 
 //leo los datos del archivo data.json (lo leao sync porque solo lo necesito una vez al cargar el servidor)
 const data = fs.readFileSync(`${__dirname}/data.json`, 'utf-8');
-
+const dataJSON = JSON.parse(data);
 
 //creo el servidor desde el modulo nativo de node http
 const server = http.createServer(async (req, res) => {
@@ -28,9 +28,25 @@ const server = http.createServer(async (req, res) => {
 		'X-Powered-By':'nodejs'
     });
 
-    if (parametrosCliente === "chao"){
+    if (parametrosCliente === 'ciudades'){
+
+        let ciudades = dataJSON.map((item) => item.Ciudad);
+        ciudades = ciudades.filter((item, index) => ciudades.indexOf(item) >= index);
+        res.write(ciudades.toString());
+    }
+    
+    else if (parametrosCliente === 'tipos'){
+        
+        let tipos = dataJSON.map((item) => item.Tipo);
+        tipos = tipos.filter((item, index) => tipos.indexOf(item) >= index);
+        res.write(tipos.toString());
+    }
+
+    else if (parametrosCliente === "chao"){
         res.write(data);
-    } else {
+    } 
+    
+    else {
         res.write('');
     }
 

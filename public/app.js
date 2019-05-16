@@ -19,16 +19,15 @@ $("#rangoPrecio").ionRangeSlider({
 
 //Funcionalidad de BOTON DE BUSQUEDA para presentar campos de busqueda 
 $('#checkPersonalizada').on('change', (e) => {
-  if (this.customSearch == false) {
-    this.customSearch = true
+
+  if (state.customSearch == false || state.customSearch == undefined) {
+    state.customSearch = true;
+    $('#buscar').text('BUSCAR')
   } else {
-    this.customSearch = false
+    state.customSearch = false;
+    $('#buscar').text('VER TODOS')
   }
   $('#personalizada').toggleClass('invisible')
-});
-
-$('#buscar').click((e) => { 
-  hacerPeticiones('chao');
 });
 
 //Funcion para requerir peticiones, esperar y devolverlas en la pantalla
@@ -37,20 +36,20 @@ const hacerPeticiones = async (filtros) =>{
   presentarPeticiones();
 };
 //funcion para requerir peticiones
-const requerirPeticiones = async (filtros) => {
+const requerirPeticiones = async (parametros) => {
   return new Promise(function (resolve, reject) {
     const request = new XMLHttpRequest;
     request.open('POST', "http://127.0.0.1:1337/",true);
     request.onload = function () {
       if (this.status == 200){
         resolve();
-        state.respuesta = request.response;
+        state.respuesta = request.response; 
       }else if (this.status == 404){
         reject();
         console.log('readystate onLoad', request);
       }
     }
-    request.send(filtros);
+    request.send(parametros);
   });
 };
 
@@ -114,4 +113,28 @@ const presentarPeticiones = () => {
     listaResultados.insertAdjacentHTML('beforeend', resultadoVacioHtml);
   }
 };
+
+//inicializar los <option> de los <select> de ciudad y tipo
+const iniciarOptions = async () =>{
+  await requerirPeticiones('ciudades');
+  const ciudadesString = state.respuesta;
+  const ciudades = ciudadesString.split(",");
+  ciudades.forEach((el) => {
+    document.querySelector('#ciudad').insertAdjacentHTML('beforeend',`<option value="${el}">${el}</option>`)
+  });
+  await requerirPeticiones('tipos');
+  const tiposString = state.respuesta;
+  const tipos = tiposString.split(",");
+  tipos.forEach((el) => {
+    document.querySelector('#tipo').insertAdjacentHTML('beforeend',`<option value="${el}">${el}</option>`)
+  });
+  $('select').material_select();
+};
+iniciarOptions();
+
+//escuchar el click en buscar y 
+$('#buscar').click((e) => { 
+  hacerPeticiones('chao');
+});
+
 hacerPeticiones('hola');
