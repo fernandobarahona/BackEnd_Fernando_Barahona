@@ -31,7 +31,7 @@ div.lista .card:hover {
 
 div.lista {
   max-height: 100%;
-  overflow: scroll;
+  overflow: hidden;
 }
 
 .lista img {
